@@ -1,4 +1,5 @@
-﻿@model ICollection<EveTools.Domain.ApiKey>
+﻿@using EveAI.Live.Account
+@model ICollection<EveTools.Domain.ApiKey>
 Put something here...
 
 <ul>
@@ -13,7 +14,10 @@ Put something here...
             <ul>
                 @foreach (var c in x.Characters)
                 {
-                    <li>@c.Name in @c.CorporationName</li>
+                    <li>
+                        @c.Name in @c.CorporationName - 
+                        @Html.ActionLink("Assets", "Assets", new { id = k.id.ToString(), isCorp = x.KeyType == APIKeyInfo.APIKeyType.Corporation, characterId = c.CharacterID } )
+                    </li>
                 }
             </ul>
         </li>

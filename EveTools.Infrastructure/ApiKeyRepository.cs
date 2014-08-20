@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EveAI.Live;
 using EveTools.Domain;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -26,7 +27,7 @@ namespace EveTools.Infrastructure
 
         public ApiKey GetById(string key)
         {
-            var keys = _col.Find(new QueryDocument("_id", key)).ToList();
+            var keys = _col.Find(new QueryDocument("_id", new ObjectId(key))).ToList();
             keys.ForEach(UpdateKeyInfo);
             return keys.SingleOrDefault();
         }

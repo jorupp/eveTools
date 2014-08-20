@@ -1,0 +1,55 @@
+﻿@using EveAI.Live.Account
+@model ICollection<EveAI.Live.Asset>
+
+@helper RenderAssets(IEnumerable<EveAI.Live.Asset> assets, int prefixColspan, int totalColspan)
+{
+    if (prefixColspan > 1)
+    {
+        return;
+    }
+    foreach (var c in assets.GroupBy(i => i.Type.Group.Category).OrderBy(i => i.Key.Name))
+    {
+        foreach (var g in c.GroupBy(i => i.Type.Group).OrderBy(i => i.Key.Name))
+        {
+            foreach (var t in g.GroupBy(i => i.Type).OrderBy(i => i.Key.Name))
+            {
+                var collapse = t.Where(i => i.Contents == null).ToList();
+                var expand = t.Where(i => i.Contents != null);
+                if (collapse.Any())
+                {
+                    <tr>
+                        <td colspan="@(prefixColspan + 1)"></td>
+                        <td colspan="@(totalColspan - prefixColspan - 1)">@t.Key.Name</td>
+                        <td>@collapse.Sum(i => i.Quantity)</td>
+                    </tr>
+                }
+                foreach (var x in expand)
+                {
+                    <tr>
+                        <td colspan="@(prefixColspan + 1)"></td>
+                        <td colspan="@(totalColspan - prefixColspan - 1)">@t.Key.Name</td>
+                    </tr>
+                    @RenderAssets(x.Contents, prefixColspan + 1, totalColspan)
+                }
+            }
+        }
+    }
+}
+
+<table class="table">
+    @foreach (var loc in Model.GroupBy(i => new { i.LocationID, i.LocationSolarsystem, i.LocationStation, i.LocationConquerableStation }).OrderBy(i => i.Key.LocationID))
+    {
+        foreach (var cc in Model.GroupBy(i => i.Container).OrderBy(i => i.Key))
+        {
+            var locName = 
+                loc.Key.LocationConquerableStation != null ? loc.Key.LocationConquerableStation.StationName :
+                loc.Key.LocationStation != null ? loc.Key.LocationStation.Name :
+                loc.Key.LocationSolarsystem != null ? loc.Key.LocationSolarsystem.Name :
+                loc.Key.LocationID.ToString();
+            <tr>
+                <td colspan="10">@locName - @cc.Key</td>
+            </tr>
+            @RenderAssets(cc, 0, 10)
+        }
+    }
+</table>
