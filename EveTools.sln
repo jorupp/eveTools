@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveTools.Web", "EveTools.Web\EveTools.Web.csproj", "{FD6CC1C1-9980-465D-930E-6B4A35B716B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveTools.Infrastructure", "EveTools.Infrastructure\EveTools.Infrastructure.csproj", "{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveTools.Domain", "EveTools.Domain\EveTools.Domain.csproj", "{72BF16B5-21EC-48BE-8CB2-246931C075E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{FD6CC1C1-9980-465D-930E-6B4A35B716B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD6CC1C1-9980-465D-930E-6B4A35B716B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD6CC1C1-9980-465D-930E-6B4A35B716B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
