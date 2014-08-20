@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using EveAI;
 using EveAI.Live;
 using EveTools.Domain;
 using EveTools.Domain.Models;
@@ -16,10 +17,12 @@ namespace EveTools.Infrastructure
 {
     public class PricingRepository : IPricingRepository
     {
+        private readonly DataCore _dataCore;
         private MongoCollection<PricingStats> _col;
 
-        public PricingRepository(MongoDatabase database)
+        public PricingRepository(MongoDatabase database, DataCore dataCore)
         {
+            _dataCore = dataCore;
             _col = database.GetCollection<PricingStats>("pricing");
         }
 
@@ -42,9 +45,8 @@ namespace EveTools.Infrastructure
 
                 var baseUri = "http://api.eve-central.com/api/marketstat";
                 // get new data
-                var dataCore = new EveApi(true).EveApiCore;
-                var itemIds = dataCore.ProductTypes.Where(i => i.MarketGroup != null).Select(i => dataCore.GetIdForObject(i)).ToArray();
-                var tasks = itemIds.Chunk(100).Select(ids => Task.Run(async () =>
+                var itemIds = _dataCore.ProductTypes.Where(i => i.MarketGroup != null).Select(i => _dataCore.GetIdForObject(i)).Distinct().ToArray();
+                var tasks = itemIds.Chunk(50).Select(ids => Task.Run(async () =>
                 {
                     var uri = baseUri + "?" + string.Join("&", ids.Select(i => "typeid=" + i)) + "&" + filter;
                     var http = new HttpClient();
@@ -69,6 +71,8 @@ namespace EveTools.Infrastructure
                     throw new ApplicationException("Something broke :(");
                 data = newData;
             }
+
+            var dupes = data.items.GroupBy(i => i.typeId).Where(g => g.Count() > 1).ToList();
 
             return data.items;
         }
@@ -110,12 +114,4 @@ namespace EveTools.Infrastructure
         }
     }
 
-    public static class Extensions
-    {
-        public static IEnumerable<IEnumerable<T>> Chunk<T>(this IEnumerable<T> items, int chunkSize)
-        {
-            items = items.ToList();
-            return Enumerable.Range(0, (int)Math.Ceiling(items.Count()/(decimal)chunkSize)).Select(i => items.Skip(i * chunkSize).Take(chunkSize));
-        } 
-    }
 }

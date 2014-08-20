@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EveAI.Core, Version=2.6.6.0, Culture=neutral, PublicKeyToken=670e812152ebd673, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\EveAI.Core.dll</HintPath>
+    </Reference>
     <Reference Include="EveAI.Live">
       <HintPath>..\Dependencies\EveAI.Live.dll</HintPath>
     </Reference>
@@ -52,10 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiKey.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IApiKeyRepository.cs" />
     <Compile Include="IPricingRepository.cs" />
+    <Compile Include="IPricingService.cs" />
     <Compile Include="Models\ItemPricingStats.cs" />
     <Compile Include="Models\ItemPricingStatsDetail.cs" />
+    <Compile Include="PricingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
