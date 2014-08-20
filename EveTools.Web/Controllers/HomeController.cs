@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using EveAI;
 using EveAI.Live;
 using EveTools.Domain;
 
@@ -12,10 +13,12 @@ namespace EveTools.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IApiKeyRepository _apiKeyRepository;
+        private readonly IPricingRepository _pricingRepository;
 
-        public HomeController(IApiKeyRepository apiKeyRepository)
+        public HomeController(IApiKeyRepository apiKeyRepository, IPricingRepository pricingRepository)
         {
             _apiKeyRepository = apiKeyRepository;
+            _pricingRepository = pricingRepository;
         }
 
         // GET: Home
@@ -35,6 +38,12 @@ namespace EveTools.Web.Controllers
             var assets = isCorp ? api.GetCorporationAssets() : api.GetCharacterAssets();
 
             return View(assets);
+        }
+
+        public ActionResult Prices()
+        {
+            var dataCore = new EveApi(true).EveApiCore;
+            return Json(_pricingRepository.GetStats(dataCore.GetIdForObject(dataCore.SolarSystems.Single(i => i.Name == "Jita")), null), JsonRequestBehavior.AllowGet);
         }
     }
 }

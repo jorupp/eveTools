@@ -18,6 +18,7 @@ namespace EveTools.Web
             container.RegisterType<MongoDatabase>(new ContainerControlledLifetimeManager(), new InjectionFactory(c => c.Resolve<MongoServer>().GetDatabase("eveTools")));
 
             container.RegisterType<IApiKeyRepository, ApiKeyRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IPricingRepository, PricingRepository>(new HierarchicalLifetimeManager());
             
             // register all your components with the container here
             // it is NOT necessary to register your controllers

@@ -53,6 +53,9 @@
   <ItemGroup>
     <Compile Include="ApiKey.cs" />
     <Compile Include="IApiKeyRepository.cs" />
+    <Compile Include="IPricingRepository.cs" />
+    <Compile Include="Models\ItemPricingStats.cs" />
+    <Compile Include="Models\ItemPricingStatsDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
