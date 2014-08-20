@@ -1,0 +1,78 @@
+﻿@model EveTools.Web.Models.ProductionFromAssetsViewModel
+
+<h2>@Model.Entity - stuff needed for T2 production</h2>
+<table class="table">
+    <tr>
+        <th>Blueprint</th>
+        <th>Quantity</th>
+    </tr>
+    @foreach (var b in Model.Summary.Blueprints)
+    {
+        <tr>
+            <td>@b.BpName</td>
+            <td>@b.Quantity</td>
+        </tr>
+    }
+</table>
+<table class="table">
+    <tr>
+        <th>Material</th>
+        <th>Should have</th>
+        <th>Have</th>
+        <th>Leftover</th>
+        <th>Need</th>
+        <th>Purchase cost</th>
+    </tr>
+    @foreach (var m in Model.Summary.Materials)
+    {
+        <tr>
+            <td>@m.Name</td>
+            <td class="text-right">@m.QuantityShouldHave.ToString("N0")</td>
+            <td class="text-right">@m.QuantityHave.ToString("N0")</td>
+            <td class="text-right">@m.QuantityLeftover.ToString("N0")</td>
+            <td class="text-right">@m.QuantityNeed.ToString("N0")</td>
+            <td class="text-right">@((m.QuantityNeed * m.UnitPrice).ToString("C2"))</td>
+        </tr>
+    }
+</table>
+
+
+
+<h2>Details</h2>
+@foreach (var l in Model.Missing)
+{
+    <h4>@l.LocationName</h4>
+    <table class="table">
+        <tr>
+            <th>Blueprint</th>
+            <th>Quantity</th>
+        </tr>
+        @foreach (var b in l.Blueprints)
+        {
+            <tr>
+                <td>@b.BpName</td>
+                <td>@b.Quantity</td>
+            </tr>
+        }
+    </table>
+
+    <table class="table">
+        <tr>
+            <th>Material</th>
+            <th>Should have</th>
+            <th>Have</th>
+            <th>Need</th>
+            <th>Purchase cost</th>
+        </tr>
+        @foreach (var m in l.Materials)
+        {
+            <tr>
+                <td>@m.Name</td>
+                <td class="text-right">@m.QuantityShouldHave.ToString("N0")</td>
+                <td class="text-right">@m.QuantityHave.ToString("N0")</td>
+                <td class="text-right">@m.QuantityNeed.ToString("N0")</td>
+                <td class="text-right">@((m.QuantityNeed * m.UnitPrice).ToString("C2"))</td>
+            </tr>
+        }
+    </table>
+}

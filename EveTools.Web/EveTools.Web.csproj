@@ -508,6 +508,9 @@
     <Compile Include="Models\AssetsViewModel.cs" />
     <Compile Include="Models\BlueprintInfo.cs" />
     <Compile Include="Models\BlueprintRequirement.cs" />
+    <Compile Include="Models\MissingMaterialsLocationSummary.cs" />
+    <Compile Include="Models\MissingMaterialsSummary.cs" />
+    <Compile Include="Models\ProductionFromAssetsViewModel.cs" />
     <Compile Include="Models\ProductionRequirement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -521,6 +524,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Assets.cshtml" />
     <Content Include="Views\Blueprints\Index.cshtml" />
+    <Content Include="Views\Blueprints\ProductionFromT2Blueprints.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

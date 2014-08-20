@@ -46,7 +46,7 @@ namespace EveTools.Web.Controllers
             return View(new AssetsViewModel()
             {
                 Entity = isCorp ? character.CorporationName : character.Name,
-                Assets = summary,
+                Missing = summary,
             });
         }
 

@@ -16,7 +16,8 @@ Put something here...
                 {
                     <li>
                         @c.Name in @c.CorporationName - 
-                        @Html.ActionLink("Assets", "Assets", new { id = k.id.ToString(), isCorp = x.KeyType == APIKeyInfo.APIKeyType.Corporation, characterId = c.CharacterID } )
+                        @Html.ActionLink("Assets", "Assets", new { id = k.id.ToString(), isCorp = x.KeyType == APIKeyInfo.APIKeyType.Corporation, characterId = c.CharacterID }) -
+                        @Html.ActionLink("T2 BPC check", "ProductionFromT2Blueprints", "Blueprints", new { id = k.id.ToString(), isCorp = x.KeyType == APIKeyInfo.APIKeyType.Corporation, characterId = c.CharacterID }, new {})
                     </li>
                 }
             </ul>

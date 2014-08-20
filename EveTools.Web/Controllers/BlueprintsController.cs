@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EveAI;
+using EveAI.Live;
 using EveAI.Product;
 using EveTools.Domain;
 using EveTools.Domain.Models;
@@ -16,12 +17,14 @@ namespace EveTools.Web.Controllers
         private readonly DataCore _dataCore;
         private readonly IPricingService _pricingService;
         private readonly IStaticDataRepository _staticDataRepository;
+        private readonly IApiKeyRepository _apiKeyRepository;
 
-        public BlueprintsController(DataCore dataCore, IPricingService pricingService, IStaticDataRepository staticDataRepository)
+        public BlueprintsController(DataCore dataCore, IPricingService pricingService, IStaticDataRepository staticDataRepository, IApiKeyRepository apiKeyRepository)
         {
             _dataCore = dataCore;
             _pricingService = pricingService;
             _staticDataRepository = staticDataRepository;
+            _apiKeyRepository = apiKeyRepository;
         }
 
         // GET: Blueprints
@@ -74,5 +77,107 @@ namespace EveTools.Web.Controllers
             req.TotalCost = req.Materials.Sum(i => i.TotalPrice);
             return req;
         }
+
+        public ActionResult ProductionFromT2Blueprints(string id, bool isCorp, int characterId)
+        {
+            var key = _apiKeyRepository.GetById(id);
+            if (null == key)
+                return HttpNotFound();
+            var api = new EveApi(key.keyId, key.vCode, characterId);
+            var assets = isCorp ? api.GetCorporationAssets() : api.GetCharacterAssets();
+
+            var summary = BuildLocationSummaries(assets);
+            var character = key.keyInfo.Characters.Single(i => i.CharacterID == characterId);
+            var model = new ProductionFromAssetsViewModel()
+            {
+                Entity = isCorp ? character.CorporationName : character.Name,
+                Missing = summary,
+            };
+            model.Summary = new MissingMaterialsSummary()
+            {
+                Blueprints = model.Missing.SelectMany(i => i.Blueprints).GroupBy(i => i.BpId).Select(i => new MissingMaterialsLocationSummary.BlueprintInfo()
+                {
+                    BpId = i.First().BpId,
+                    BpName = i.First().BpName,
+                    ProductId = i.First().ProductId,
+                    ProductName = i.First().ProductName,
+                    MaxProductionLimit = i.First().MaxProductionLimit,
+                    Quantity = i.Sum(ii => ii.Quantity),
+                }).ToArray(),
+                Materials = model.Missing.SelectMany(i => i.Materials).GroupBy(i => i.Id).Select(i => new MissingMaterialsSummary.MaterialsInfo
+                {
+                    Id = i.First().Id,
+                    Name = i.First().Name,
+                    QuantityShouldHave = i.Sum(ii => ii.QuantityShouldHave),
+                    QuantityHave = i.Sum(ii => ii.QuantityHave),
+                    QuantityNeed = i.Sum(ii => ii.QuantityNeed),
+                    QuantityLeftover = i.Sum(ii => ii.QuantityHave - ii.QuantityShouldHave + ii.QuantityNeed),
+                    UnitPrice = i.First().UnitPrice,
+                }).ToArray()
+            };
+            return View(model);
+        }
+
+
+        private List<MissingMaterialsLocationSummary> BuildLocationSummaries(IEnumerable<Asset> assets)
+        {
+            var matInfo = _staticDataRepository.GetBlueprintMaterialInfo();
+            var retVal = new List<MissingMaterialsLocationSummary>();
+            foreach (var loc in assets.GroupBy(i => new { i.LocationID, i.LocationSolarsystem, i.LocationStation, i.LocationConquerableStation }).OrderBy(i => i.Key.LocationID))
+            {
+                var locName =
+                    loc.Key.LocationConquerableStation != null ? loc.Key.LocationConquerableStation.StationName :
+                    loc.Key.LocationStation != null ? loc.Key.LocationStation.Name :
+                    loc.Key.LocationSolarsystem != null ? loc.Key.LocationSolarsystem.Name :
+                    loc.Key.LocationID.ToString();
+
+                var deepAssets = loc.Recursive(i => (IEnumerable<Asset>)i.Contents ?? new Asset[0]).ToList();
+
+                var bps = deepAssets.Where(i => i.Type.Blueprint != null && i.Type.Blueprint.TechLevel == 2).GroupBy(i => i.Type).ToList();
+                if (bps.Count == 0)
+                    continue;
+
+                var s = new MissingMaterialsLocationSummary()
+                {
+                    LocationName = locName,
+                    Blueprints = bps.Select(i => new MissingMaterialsLocationSummary.BlueprintInfo()
+                    {
+                        BpId = _dataCore.GetIdForObject(i.Key),
+                        BpName = i.Key.Name,
+                        ProductId = _dataCore.GetIdForObject(i.Key.Blueprint.Product),
+                        ProductName = i.Key.Blueprint.Product.Name,
+                        MaxProductionLimit = i.Key.Blueprint.MaxProductionLimit,
+                        Quantity = i.Sum(ii => ii.Quantity),
+                    }).ToArray(),
+                };
+                retVal.Add(s);
+
+                s.Materials =
+                    (from bp in s.Blueprints
+                        let moduleDefaultMaxRun = 10 //  should be 1 for ships, but we don't have any, so that's ok
+                        from r in GetNewRequirements(matInfo, bp.BpId, 7, moduleDefaultMaxRun).Materials
+                        let itemsRequired = bp.Quantity*r.Quantity
+                        group itemsRequired by new {r.TypeId, r.TypeName}
+                        into g
+                        select new MissingMaterialsLocationSummary.MaterialsInfo()
+                        {
+                            Id = g.Key.TypeId,
+                            Name = g.Key.TypeName,
+                            QuantityShouldHave = g.Sum(ii => ii),
+                            UnitPrice = _pricingService.GetPrice(g.Key.TypeId),
+                        }).ToArray();
+
+                var qty = deepAssets.GroupBy(i => i.TypeID).ToDictionary(i => i.Key, i => i.Sum(ii => ii.Quantity));
+                foreach (var mat in s.Materials)
+                {
+                    long matQty;
+                    if (!qty.TryGetValue(mat.Id, out matQty))
+                        continue;
+                    mat.QuantityHave += matQty;
+                }
+            }
+            return retVal;
+        }
+
     }
 }

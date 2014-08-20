@@ -29,5 +29,17 @@ namespace EveTools.Domain
         {
             return pricingService.GetPrice(type);
         }
+
+        public static IEnumerable<T> Recursive<T>(this IEnumerable<T> items, Func<T, IEnumerable<T>> recurse)
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+                foreach (var child in recurse(item).Recursive(recurse))
+                {
+                    yield return child;
+                }
+            }
+        } 
     }
 }
