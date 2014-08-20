@@ -500,6 +500,7 @@
     <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Controllers\BlueprintsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IndustryController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -536,6 +537,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="partials\" />
     <Folder Include="Scripts\app\" />
+    <Folder Include="Views\Industry\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EveTools.Domain\EveTools.Domain.csproj">
