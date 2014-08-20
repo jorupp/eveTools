@@ -35,7 +35,11 @@
             <td class="text-right">@m.QuantityShouldHave.ToString("N0")</td>
             <td class="text-right">@m.QuantityHave.ToString("N0")</td>
             <td class="text-right">@m.QuantityLeftover.ToString("N0")</td>
-            <td class="text-right">@m.QuantityNeed.ToString("N0")</td>
+            <td class="text-right">
+                <a href="#" onclick="CCPEVE.showMarketDetails(@m.Id); return false;">
+                    @m.QuantityNeed.ToString("N0")
+                </a>
+            </td>
             <td class="text-right">@((m.QuantityNeed * m.UnitPrice).ToString("C2"))</td>
         </tr>
     }
