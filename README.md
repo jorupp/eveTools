@@ -1,2 +1,3 @@
 eveTools
 ========
+A new random collection of tools I'm assembling for Eve.  Most likely industry/asset centric, but who knows...
