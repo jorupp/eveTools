@@ -1,6 +1,7 @@
 ﻿@using EveTools.Web.Models
-@model ICollection<EveTools.Web.Models.AssetSummary>
-           
+@model AssetsViewModel
+
+<h3>Assets for @Model.Entity</h3>           
 @helper RenderCells(AssetSummary i)
 {
     <td>@i.Name</td>
@@ -42,4 +43,4 @@
     </table>
 }
 
-@Render(Model)
+@Render(Model.Assets)

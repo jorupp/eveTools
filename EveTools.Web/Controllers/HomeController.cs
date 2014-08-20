@@ -42,14 +42,13 @@ namespace EveTools.Web.Controllers
             var summary = BuildLocationSummaries(assets);
             summary.Sort((a,b) => a.TotalValue < b.TotalValue ? 1 : -1);
 
-            return View(summary);
+            var character = key.keyInfo.Characters.Single(i => i.CharacterID == characterId);
+            return View(new AssetsViewModel()
+            {
+                Entity = isCorp ? character.CorporationName : character.Name,
+                Assets = summary,
+            });
         }
-
-        //public ActionResult Prices()
-        //{
-        //    var dataCore = new EveApi(true).EveApiCore;
-        //    return Json(_pricingRepository.GetStats(dataCore.GetIdForObject(dataCore.SolarSystems.Single(i => i.Name == "Jita")), null), JsonRequestBehavior.AllowGet);
-        //}
 
         private List<AssetSummary> BuildLocationSummaries(IEnumerable<Asset> assets)
         {
@@ -121,6 +120,5 @@ namespace EveTools.Web.Controllers
             }
             return retVal;
         } 
-
     }
 }
