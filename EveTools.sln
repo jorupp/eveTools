@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveTools.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EveTools.Domain", "EveTools.Domain\EveTools.Domain.csproj", "{72BF16B5-21EC-48BE-8CB2-246931C075E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dependencies", "Dependencies\Dependencies.csproj", "{65B485F8-CFE4-496A-AEBE-A3B97BC151DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72BF16B5-21EC-48BE-8CB2-246931C075E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65B485F8-CFE4-496A-AEBE-A3B97BC151DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B485F8-CFE4-496A-AEBE-A3B97BC151DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B485F8-CFE4-496A-AEBE-A3B97BC151DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B485F8-CFE4-496A-AEBE-A3B97BC151DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

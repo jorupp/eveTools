@@ -59,6 +59,12 @@
     <Reference Include="Elmah.Mvc">
       <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="EveAI.Core">
+      <HintPath>..\Dependencies\EveAI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EveAI.Live">
+      <HintPath>..\Dependencies\EveAI.Live.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.AspNet">
       <HintPath>..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
@@ -67,6 +73,9 @@
     </Reference>
     <Reference Include="Glimpse.Mvc5">
       <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\Dependencies\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="IronRuby">
       <HintPath>..\packages\IronRuby.1.1.3\Lib\IronRuby.dll</HintPath>
@@ -84,11 +93,23 @@
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Dynamic.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Scripting">
       <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Scripting.Metadata">
       <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Scripting.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -115,6 +136,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Unity.Mvc5">
+      <HintPath>..\packages\Unity.Mvc5.1.1\lib\net45\Unity.Mvc5.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Razor">
@@ -472,6 +496,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -485,7 +510,7 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\version.json" />
-    <Content Include="Views\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
@@ -500,6 +525,16 @@
     <Folder Include="Models\" />
     <Folder Include="partials\" />
     <Folder Include="Scripts\app\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EveTools.Domain\EveTools.Domain.csproj">
+      <Project>{72BF16B5-21EC-48BE-8CB2-246931C075E7}</Project>
+      <Name>EveTools.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EveTools.Infrastructure\EveTools.Infrastructure.csproj">
+      <Project>{6FBE8EA1-10F0-4A83-A93B-42EA7B743166}</Project>
+      <Name>EveTools.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

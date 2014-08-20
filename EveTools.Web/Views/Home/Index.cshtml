@@ -1,1 +1,21 @@
-﻿Put something here...
+﻿@model ICollection<EveTools.Domain.ApiKey>
+Put something here...
+
+<ul>
+    @foreach (var k in Model)
+    {
+        var x = k.keyInfo;
+        <li>
+            <span>KeyType: @x.KeyType</span>
+            <span>Expires: @x.Expires</span>
+            <span>AccessMask: @x.AccessMask</span>
+            <span>Characters: @x.Characters.Count</span>
+            <ul>
+                @foreach (var c in x.Characters)
+                {
+                    <li>@c.Name in @c.CorporationName</li>
+                }
+            </ul>
+        </li>
+    }    
+</ul>
