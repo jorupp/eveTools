@@ -14,6 +14,7 @@ namespace EveTools.Web.Models
             public string ProductName { get; set; }
             public int MaxProductionLimit { get; set; }
             public long Quantity { get; set; }
+            public decimal ProducedValue { get; set; }
         }
 
         public class MaterialsInfo

@@ -103,6 +103,7 @@ namespace EveTools.Web.Controllers
                     ProductName = i.First().ProductName,
                     MaxProductionLimit = i.First().MaxProductionLimit,
                     Quantity = i.Sum(ii => ii.Quantity),
+                    ProducedValue = i.Sum(ii => ii.ProducedValue),
                 }).ToArray(),
                 Materials = model.Missing.SelectMany(i => i.Materials).GroupBy(i => i.Id).Select(i => new MissingMaterialsSummary.MaterialsInfo
                 {
@@ -137,6 +138,7 @@ namespace EveTools.Web.Controllers
                 if (bps.Count == 0)
                     continue;
 
+                var moduleDefaultMaxRun = 10; //  should be 1 for ships, but we don't have any, so that's ok
                 var s = new MissingMaterialsLocationSummary()
                 {
                     LocationName = locName,
@@ -148,13 +150,13 @@ namespace EveTools.Web.Controllers
                         ProductName = i.Key.Blueprint.Product.Name,
                         MaxProductionLimit = i.Key.Blueprint.MaxProductionLimit,
                         Quantity = i.Sum(ii => ii.Quantity),
+                        ProducedValue = i.Sum(ii => ii.Quantity) * _pricingService.GetPrice(i.Key.Blueprint.Product) * moduleDefaultMaxRun,
                     }).ToArray(),
                 };
                 retVal.Add(s);
 
                 s.Materials =
                     (from bp in s.Blueprints
-                        let moduleDefaultMaxRun = 10 //  should be 1 for ships, but we don't have any, so that's ok
                         from r in GetNewRequirements(matInfo, bp.BpId, 7, moduleDefaultMaxRun).Materials
                         let itemsRequired = bp.Quantity*r.Quantity
                         group itemsRequired by new {r.TypeId, r.TypeName}
