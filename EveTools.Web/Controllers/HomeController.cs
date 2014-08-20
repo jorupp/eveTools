@@ -40,13 +40,13 @@ namespace EveTools.Web.Controllers
             var assets = isCorp ? api.GetCorporationAssets() : api.GetCharacterAssets();
 
             var summary = BuildLocationSummaries(assets);
-            summary.Sort((a,b) => a.TotalValue < b.TotalValue ? 1 : -1);
+            summary.Sort((a, b) => a.TotalValue < b.TotalValue ? 1 : a.TotalValue == b.TotalValue ? 0 : -1);
 
             var character = key.keyInfo.Characters.Single(i => i.CharacterID == characterId);
             return View(new AssetsViewModel()
             {
                 Entity = isCorp ? character.CorporationName : character.Name,
-                Missing = summary,
+                Assets = summary,
             });
         }
 
