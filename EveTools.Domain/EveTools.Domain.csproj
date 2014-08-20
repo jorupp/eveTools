@@ -60,6 +60,11 @@
     <Compile Include="IApiKeyRepository.cs" />
     <Compile Include="IPricingRepository.cs" />
     <Compile Include="IPricingService.cs" />
+    <Compile Include="IStaticDataRepository.cs" />
+    <Compile Include="Models\ActivityMaterial.cs" />
+    <Compile Include="Models\ActivityProduct.cs" />
+    <Compile Include="Models\BlueprintActivityMaterialInfo.cs" />
+    <Compile Include="Models\BlueprintMaterialInfo.cs" />
     <Compile Include="Models\ItemPricingStats.cs" />
     <Compile Include="Models\ItemPricingStatsDetail.cs" />
     <Compile Include="PricingService.cs" />

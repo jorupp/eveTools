@@ -498,6 +498,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="CassetteConfiguration.cs" />
+    <Compile Include="Controllers\BlueprintsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -505,6 +506,9 @@
     </Compile>
     <Compile Include="Models\AssetSummary.cs" />
     <Compile Include="Models\AssetsViewModel.cs" />
+    <Compile Include="Models\BlueprintInfo.cs" />
+    <Compile Include="Models\BlueprintRequirement.cs" />
+    <Compile Include="Models\ProductionRequirement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +520,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Assets.cshtml" />
+    <Content Include="Views\Blueprints\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

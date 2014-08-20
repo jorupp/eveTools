@@ -23,6 +23,7 @@ namespace EveTools.Web
 
             container.RegisterType<IApiKeyRepository, ApiKeyRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<IPricingRepository, PricingRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IStaticDataRepository, StaticDataRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<IPricingService, PricingService>(new HierarchicalLifetimeManager());
             // register all your components with the container here
             // it is NOT necessary to register your controllers

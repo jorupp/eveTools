@@ -1,0 +1,17 @@
+﻿@using EveAI
+@model List<EveTools.Web.Models.BlueprintInfo>
+@{
+    var dataCore = DependencyResolver.Current.GetService<DataCore>();
+}
+
+<table class="table">
+    @foreach (var bp in Model)
+    {
+        <tr>
+            <td>@bp.Product</td>
+            <td class="text-right">@bp.NewInvented.TotalCost.ToString("C2")</td>
+            <td class="text-right">@bp.MigratedInvented.TotalCost.ToString("C2")</td>
+            <td class="text-right">@bp.ProductValue.ToString("C2")</td>
+        </tr>
+    }
+</table>
