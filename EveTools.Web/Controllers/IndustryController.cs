@@ -56,7 +56,7 @@ namespace EveTools.Web.Controllers
                  from j2 in jobs
                  where (j1.Start <= j2.Start && j2.Start <= j1.End) || (j1.Start <= j2.End && j2.End <= j1.End)
                  group j2 by j1.JobID into g
-                 select g.Count()).Max();
+                 select g.Count()).Where(i => i <= 11).Max();
         }
     }
 }
