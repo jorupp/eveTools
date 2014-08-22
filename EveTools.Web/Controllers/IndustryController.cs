@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EveAI.Live;
+using EveAI.Live.Account;
 using EveTools.Domain;
 using EveTools.Web.Models;
 
@@ -24,6 +25,11 @@ namespace EveTools.Web.Controllers
             var key = _apiKeyRepository.GetById(id);
             if (null == key)
                 return HttpNotFound();
+            var accountMap =
+                _apiKeyRepository.GetAll()
+                    .SelectMany(i => i.keyInfo.Characters.Select(ii => new {ii.CharacterID, AccountName = i.name}))
+                    .GroupBy(i => i.CharacterID)
+                    .ToDictionary(i => i.Key, i => i.First().AccountName);
             var api = new EveApi(key.keyId, key.vCode, characterId);
             var currentJobs = isCorp ? api.Get<CorpUpdatedIndustryJobApi>().Data : api.Get<CharUpdatedIndustryJobApi>().Data; ;
             var allJobs = isCorp ? api.Get<CorpHistoryUpdatedIndustryJobApi>().Data : api.Get<CharHistoryUpdatedIndustryJobApi>().Data;
@@ -43,7 +49,8 @@ namespace EveTools.Web.Controllers
                                  LatestInstalledJob = groups.Max(i => i.Start),
                                  MaxJobCount = maxConcurrent,
                                  CurrentJobCount = timeRemaining.Count(),
-                                 TimeUntilNextComplete = timeRemaining.Cast<TimeSpan?>().FirstOrDefault()
+                                 TimeUntilNextComplete = timeRemaining.Cast<TimeSpan?>().FirstOrDefault(),
+                                 AccountName = accountMap.FirstOrDefault(i => i.Key == groups.Key.InstallerID).Value
                              }).ToList();
 
             return View(model);

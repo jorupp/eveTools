@@ -12,5 +12,6 @@ namespace EveTools.Web.Models
         public int MaxJobCount { get; set; }
         public int CurrentJobCount { get; set; }
         public TimeSpan? TimeUntilNextComplete { get; set; }
+        public string AccountName { get; set; }
     }
 }

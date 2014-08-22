@@ -6,19 +6,26 @@
     <h4>@a.Key</h4>
     <table class="table">
         <tr>
-            <th>Installer</th>
+            <th colspan="2">Installer</th>
             <th>Latest Installed Job</th>
             <th>Current Count</th>
             <th>Next job completes in</th>
         </tr>
-        @foreach (var p in a.OrderBy(i => i.InstallerName))
+        @foreach (var aa in a.GroupBy(i => i.AccountName).OrderBy(i => i.Key))
         {
-            <tr @Html.Raw(p.CurrentJobCount < p.MaxJobCount ? @"class=""info""" : "")>
-                <td>@p.InstallerName</td>
-                <td>@p.LatestInstalledJob</td>
-                <td>@p.CurrentJobCount</td>
-                <td>@p.TimeUntilNextComplete</td>
+            <tr>
+                <td>@aa.Key</td>
             </tr>
+            foreach (var p in aa.OrderBy(i => i.AccountName).ThenBy(i => i.InstallerName))
+            {
+                <tr @Html.Raw(p.CurrentJobCount < p.MaxJobCount ? @"class=""info""" : "")>
+                    <td></td>
+                    <td>@p.InstallerName</td>
+                    <td>@p.LatestInstalledJob</td>
+                    <td>@p.CurrentJobCount</td>
+                    <td>@p.TimeUntilNextComplete</td>
+                </tr>
+            }
         }
     </table>
 }
