@@ -509,6 +509,7 @@
     <Compile Include="Models\AssetsViewModel.cs" />
     <Compile Include="Models\BlueprintInfo.cs" />
     <Compile Include="Models\BlueprintRequirement.cs" />
+    <Compile Include="Models\IndustryStatusModel.cs" />
     <Compile Include="Models\MissingMaterialsLocationSummary.cs" />
     <Compile Include="Models\MissingMaterialsSummary.cs" />
     <Compile Include="Models\ProductionFromAssetsViewModel.cs" />
@@ -526,6 +527,7 @@
     <Content Include="Views\Home\Assets.cshtml" />
     <Content Include="Views\Blueprints\Index.cshtml" />
     <Content Include="Views\Blueprints\ProductionFromT2Blueprints.cshtml" />
+    <Content Include="Views\Industry\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -537,7 +539,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="partials\" />
     <Folder Include="Scripts\app\" />
-    <Folder Include="Views\Industry\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EveTools.Domain\EveTools.Domain.csproj">

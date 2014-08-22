@@ -58,6 +58,7 @@
     <Compile Include="ApiKey.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IApiKeyRepository.cs" />
+    <Compile Include="UpdatedIndustryJobs.cs" />
     <Compile Include="IPricingRepository.cs" />
     <Compile Include="IPricingService.cs" />
     <Compile Include="IStaticDataRepository.cs" />

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EveAI;
+using EveAI.Live;
 using EveAI.Map;
 using EveAI.Product;
 
@@ -40,6 +42,22 @@ namespace EveTools.Domain
                     yield return child;
                 }
             }
-        } 
+        }
+
+        public static T Get<T>(this EveApi api) where T : EveApiBase, new()
+        {
+            var method =
+                api.GetType()
+                    .GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+                    .Single(
+                        i =>
+                            i.Name == "UpdateEveApi" &&
+                            i.GetParameters().Length == 1 &&
+                            i.IsGenericMethodDefinition &&
+                            i.GetGenericArguments().Length == 1);
+            var t = new T();
+            method.MakeGenericMethod(typeof(T)).Invoke(api, new object[] { t });
+            return t;
+        }
     }
 }

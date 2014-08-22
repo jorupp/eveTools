@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EveAI.Live;
 using EveTools.Domain;
+using EveTools.Web.Models;
 
 namespace EveTools.Web.Controllers
 {
@@ -24,9 +25,27 @@ namespace EveTools.Web.Controllers
             if (null == key)
                 return HttpNotFound();
             var api = new EveApi(key.keyId, key.vCode, characterId);
-            var jobs = isCorp ? api.GetCorporationIndustryJobs() : api.GetCharacterIndustryJobs();
+            var currentJobs = isCorp ? api.Get<CorpUpdatedIndustryJobApi>().Data : api.Get<CharUpdatedIndustryJobApi>().Data; ;
+            var allJobs = isCorp ? api.Get<CorpHistoryUpdatedIndustryJobApi>().Data : api.Get<CharHistoryUpdatedIndustryJobApi>().Data;
 
-            return Content(jobs.Count.ToString());
+            var model = (from j in allJobs
+                         group j.Start by new { j.InstallerID, j.Activity }
+                             into groups
+                             join current in currentJobs.GroupBy(i => new { i.InstallerID, i.Activity }) on groups.Key equals
+                                 current.Key into currentGroup
+                             from current in currentGroup.DefaultIfEmpty()
+                             let timeRemaining = (current ?? (IEnumerable<UpdatedIndustryJob>)new UpdatedIndustryJob[0]).Select(i => i.End.Subtract(DateTime.UtcNow)).Where(i => i.TotalSeconds > 0).ToList()
+                             select new IndustryStatusModel
+                             {
+                                 InstallerID = groups.Key.InstallerID,
+                                 InstallerName = api.GetCharacterNameLookup(new List<long>() { groups.Key.InstallerID })[groups.Key.InstallerID],
+                                 Activity = groups.Key.Activity,
+                                 LatestInstalledJob = groups.Max(),
+                                 CurrentJobCount = timeRemaining.Count(),
+                                 TimeUntilNextComplete = timeRemaining.Cast<TimeSpan?>().FirstOrDefault()
+                             }).ToList();
+
+            return View(model);
         }
     }
 }
