@@ -9,6 +9,7 @@ namespace EveTools.Web.Models
         public string InstallerName { get; set; }
         public Activity Activity { get; set; }
         public DateTime LatestInstalledJob { get; set; }
+        public int MaxJobCount { get; set; }
         public int CurrentJobCount { get; set; }
         public TimeSpan? TimeUntilNextComplete { get; set; }
     }

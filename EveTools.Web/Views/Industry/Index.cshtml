@@ -13,7 +13,7 @@
         </tr>
         @foreach (var p in a.OrderBy(i => i.InstallerName))
         {
-            <tr>
+            <tr @Html.Raw(p.CurrentJobCount < p.MaxJobCount ? @"class=""info""" : "")>
                 <td>@p.InstallerName</td>
                 <td>@p.LatestInstalledJob</td>
                 <td>@p.CurrentJobCount</td>
@@ -22,3 +22,6 @@
         }
     </table>
 }
+<script type="text/javascript">
+    setTimeout(function () { location.reload(1); }, 120000);
+</script>
