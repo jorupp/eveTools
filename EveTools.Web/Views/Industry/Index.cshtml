@@ -10,6 +10,7 @@
             <th>Latest Installed Job</th>
             <th>Current Count</th>
             <th>Next job completes in</th>
+            <th>Last job completes in</th>
         </tr>
         @foreach (var aa in a.GroupBy(i => i.AccountName).OrderBy(i => i.Key))
         {
@@ -23,7 +24,8 @@
                     <td>@p.InstallerName</td>
                     <td>@p.LatestInstalledJob</td>
                     <td>@p.CurrentJobCount</td>
-                    <td>@p.TimeUntilNextComplete</td>
+                    <td>@(p.TimeUntilNextComplete.HasValue ? p.TimeUntilNextComplete.Value.ToString(@"hh\:mm\:ss") : null)</td>
+                    <td>@(p.TimeUntilLastComplete.HasValue ? p.TimeUntilLastComplete.Value.ToString(@"hh\:mm\:ss") : null)</td>
                 </tr>
             }
         }

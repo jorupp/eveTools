@@ -5,6 +5,7 @@ namespace EveTools.Web.Models
 {
     public class IndustryStatusModel
     {
+        public string AccountName { get; set; }
         public long InstallerID { get; set; }
         public string InstallerName { get; set; }
         public Activity Activity { get; set; }
@@ -12,6 +13,6 @@ namespace EveTools.Web.Models
         public int MaxJobCount { get; set; }
         public int CurrentJobCount { get; set; }
         public TimeSpan? TimeUntilNextComplete { get; set; }
-        public string AccountName { get; set; }
+        public TimeSpan? TimeUntilLastComplete { get; set; }
     }
 }
