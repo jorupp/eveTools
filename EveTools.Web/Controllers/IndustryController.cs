@@ -47,7 +47,7 @@ namespace EveTools.Web.Controllers
                                  InstallerID = groups.Key.InstallerID,
                                  InstallerName = api.GetCharacterNameLookup(new List<long>() { groups.Key.InstallerID })[groups.Key.InstallerID],
                                  Activity = groups.Key.Activity,
-                                 LatestInstalledJob = groups.Max(i => i.Start),
+                                 LatestInstalledJob = groups.Concat((IEnumerable<UpdatedIndustryJob>) current ?? new UpdatedIndustryJob[0]).Max(i => i.Start),
                                  MaxJobCount = maxConcurrent,
                                  CurrentJobCount = timeRemaining.Count(),
                                  TimeUntilNextComplete = timeRemaining.Cast<TimeSpan?>().FirstOrDefault(),
