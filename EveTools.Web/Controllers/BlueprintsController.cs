@@ -37,7 +37,7 @@ namespace EveTools.Web.Controllers
                 {
                     var productId = _dataCore.GetIdForObject(i);
                     var bpId = _dataCore.GetIdForObject(i.CorrespondingBlueprint);
-                    var maxProductionLimit = i.CorrespondingBlueprint.Blueprint.MaxProductionLimit;    
+                    var maxProductionLimit = i.CorrespondingBlueprint.Blueprint.MaxProductionLimit;
                     return new BlueprintInfo()
                                  {
                                      ProductId = productId,
@@ -63,7 +63,7 @@ namespace EveTools.Web.Controllers
                 Materials = mats.Select(i =>
                 {
                     var type = _dataCore.FindProductType(i.Key);
-                    var qty = Math.Max((int)Math.Ceiling((i.Value * numRuns) * (1-.01m*meLevel)), numRuns);
+                    var qty = Math.Max((int)Math.Ceiling((i.Value * numRuns) * (1 - .01m * meLevel)), numRuns);
                     return new BlueprintRequirement()
                                                  {
                                                      TypeId = i.Key,
@@ -102,6 +102,7 @@ namespace EveTools.Web.Controllers
                     ProductId = i.First().ProductId,
                     ProductName = i.First().ProductName,
                     MaxProductionLimit = i.First().MaxProductionLimit,
+                    TimeForMaxRun = i.First().TimeForMaxRun,
                     Quantity = i.Sum(ii => ii.Quantity),
                     ProducedValue = i.Sum(ii => ii.ProducedValue),
                 }).ToArray(),
@@ -142,16 +143,21 @@ namespace EveTools.Web.Controllers
                 var s = new MissingMaterialsLocationSummary()
                 {
                     LocationName = locName,
-                    Blueprints = bps.Select(i => new MissingMaterialsLocationSummary.BlueprintInfo()
-                    {
-                        BpId = _dataCore.GetIdForObject(i.Key),
-                        BpName = i.Key.Name,
-                        ProductId = _dataCore.GetIdForObject(i.Key.Blueprint.Product),
-                        ProductName = i.Key.Blueprint.Product.Name,
-                        MaxProductionLimit = i.Key.Blueprint.MaxProductionLimit,
-                        Quantity = i.Sum(ii => ii.Quantity),
-                        ProducedValue = i.Sum(ii => ii.Quantity) * _pricingService.GetPrice(i.Key.Blueprint.Product) * moduleDefaultMaxRun,
-                    }).ToArray(),
+                    Blueprints = (from i in bps
+                                    let bpId = _dataCore.GetIdForObject(i.Key)
+                                    join mi in matInfo on bpId equals mi.TypeId into mig
+                                    from mi in mig.DefaultIfEmpty()
+                                  select new MissingMaterialsLocationSummary.BlueprintInfo()
+                                    {
+                                        BpId = bpId,
+                                        BpName = i.Key.Name,
+                                        ProductId = _dataCore.GetIdForObject(i.Key.Blueprint.Product),
+                                        ProductName = i.Key.Blueprint.Product.Name,
+                                        MaxProductionLimit = i.Key.Blueprint.MaxProductionLimit,
+                                        Quantity = i.Sum(ii => ii.Quantity),
+                                        ProducedValue = i.Sum(ii => ii.Quantity) * _pricingService.GetPrice(i.Key.Blueprint.Product) * moduleDefaultMaxRun,
+                                        TimeForMaxRun = TimeSpan.FromSeconds(moduleDefaultMaxRun * mi.ActivityMaterialInfo[(int)Activity.Manufacturing].Time * 0.585 /** derived from actual **/),
+                                    }).ToArray(),
                 };
                 retVal.Add(s);
 

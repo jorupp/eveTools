@@ -5,6 +5,8 @@
     <tr>
         <th>Blueprint</th>
         <th>Quantity</th>
+        <th>Produced Value</th>
+        <th>Time for Max Run</th>
     </tr>
     @foreach (var b in Model.Summary.Blueprints)
     {
@@ -12,6 +14,7 @@
             <td>@b.BpName</td>
             <td>@b.Quantity</td>
             <td class="text-right">@b.ProducedValue.ToString("C2")</td>
+            <td class="text-right">@b.TimeForMaxRun</td>
         </tr>
     }
     <tr>

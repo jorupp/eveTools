@@ -1,3 +1,5 @@
+using System;
+
 namespace EveTools.Web.Models
 {
     public class MissingMaterialsLocationSummary
@@ -15,6 +17,7 @@ namespace EveTools.Web.Models
             public int MaxProductionLimit { get; set; }
             public long Quantity { get; set; }
             public decimal ProducedValue { get; set; }
+            public TimeSpan TimeForMaxRun { get; set; }
         }
 
         public class MaterialsInfo
